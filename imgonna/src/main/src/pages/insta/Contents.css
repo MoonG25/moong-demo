@@ -1,0 +1,49 @@
+#insta-container {
+  height: 100%;
+}
+
+#insta-container .insta-header {
+  background-color: #16638d;
+}
+
+#insta-container .insta-contents {
+
+}
+
+#insta-container .insta-contents .insta-search {
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.insta-search h1 {
+  padding: 15px 0;
+}
+
+.insta-search input {
+  width: 65%;
+}
+
+#insta-container .insta-footer {
+
+}
+
+@media (min-width:1001px) {
+  #insta-container .insta-header {
+    height: 60px;
+  }
+}
+
+@media (max-width: 1000px) and (min-width:601px) {
+  #insta-container .insta-header {
+    height: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  #insta-container .insta-header {
+    display: none;
+  }
+}

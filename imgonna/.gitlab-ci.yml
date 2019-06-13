@@ -1,0 +1,25 @@
+stages:
+  - build
+  - deploy
+
+build_project:
+  artifacts:
+    paths:
+      - target/imgonna*.jar
+    expire_in: 30 days
+  stage: build
+  script:
+    - make install
+    - make build
+    - make clean
+  only:
+    - master
+  when: manual
+
+deploy_project:
+  stage: deploy
+  script:
+    - make deploy
+  only:
+    - master
+  when: manual

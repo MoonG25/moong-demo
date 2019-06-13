@@ -1,0 +1,101 @@
+#code-container {
+  height: 100%;
+}
+
+#code-container .code-header {
+  /*background-color: #16638d;*/
+}
+
+#code-container .code-search {
+  height: 470px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  padding: 120px 0;
+  box-sizing: border-box;
+  background-position: center, 0 34%;
+  position: relative;
+  background-color: #31383D;
+  z-index: 1;
+  background-size: cover;
+}
+
+#code-container .code-search input {
+  width: 65%;
+}
+
+#code-container .code-result {
+
+}
+
+@media (min-width:1001px) {
+  #code-container .code-header {
+    /*height: 60px;*/
+  }
+
+  #code-container .code-search:after {
+    position: absolute;
+    content: '';
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: -webkit-linear-gradient(bottom, rgba(44, 83, 100, 0.99) 0%, rgba(32, 58, 67, 0.39) 50%, rgb(15, 32, 39) 100%);
+    background: -o-linear-gradient(bottom, rgba(44, 83, 100, 0.99) 0%, rgba(32, 58, 67, 0.39) 50%, rgb(15, 32, 39) 100%);
+    background: -ms-linear-gradient(bottom, rgba(44, 83, 100, 0.99) 0%, rgba(32, 58, 67, 0.39) 50%, rgb(15, 32, 39) 100%);
+    background: -moz-linear-gradient(bottom, rgba(44, 83, 100, 0.99) 0%, rgba(32, 58, 67, 0.39) 50%, rgb(15, 32, 39) 100%);
+    background: linear-gradient(to top, rgba(44, 83, 100, 0.99) 0%, rgba(32, 58, 67, 0.39) 50%, rgb(15, 32, 39) 100%);
+    opacity: .6;
+  }
+
+  #code-container .code-result {
+    height: 360px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 25px 0;
+  }
+
+  .code-result .result__airline {
+    width: 100%;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 150px;
+  }
+
+  .code-result .result__airline-map {
+    width: 100%;
+    height: 70px;
+    background-color: beige;
+  }
+
+  .code-result .result__airline-name {
+    display: flex;
+    margin: 10px 0;
+  }
+
+  .airline-flag {
+    margin-right: 1rem;
+  }
+
+  .airline-name p {
+    font-size: 16px;
+    color: #aaa;
+    margin: 0;
+  }
+}
+
+@media (max-width: 1000px) and (min-width:601px) {
+  #code-container .code-header {
+    height: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  #code-container .code-header {
+    display: none;
+  }
+}

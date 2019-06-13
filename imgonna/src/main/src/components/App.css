@@ -1,0 +1,74 @@
+a.hover-bold {
+  opacity: 0.8;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+/* drag */
+.app-container {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+/* 어디로 가야하니? */
+
+input[type], textarea[type] {
+  border: 1px solid #ddd;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+}
+
+input.text-input-1+button.button-1 {
+  margin-left: 1px;
+}
+
+input.text-input-1 {
+  box-sizing: border-box;
+  height: 40px;
+  width: 180px;
+  border-radius: 2px 0 0 2px;
+}
+
+button.button-1 {
+  width: 140px;
+  height: 40px;
+  border-radius: 0 2px 2px 0;
+}
+
+#home-container {
+  margin: auto;
+  background-color: white;
+}
+
+/* media query */
+@media (min-width: 1001px) {
+
+}
+
+@media (max-width: 1000px) and (min-width: 601px) {
+  input.text-input-1, button.button-1 {
+    height: 36px;
+    font-size: 12px;
+  }
+
+  input.text-input-1 {
+    width: 130px;
+  }
+
+  button.button-1 {
+    width: 100px;
+  }
+}
+
+@media (max-width: 600px) {
+
+  #home-container {
+    max-width: 375px;
+  }
+}
