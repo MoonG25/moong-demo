@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}todo_list.html{% endblock %}
+
+{% block extra-style %}
+<style></style>
+{% endblock %}
+
+{% block content %}
+<div id="app">
+  <div class="title-group">
+    <h1>My Todo App</h1>
+    서로 할 일이나 의견을 공유해 봅시다.
+  </div>
+
+  <div class="message-group">
+    {% for todo in object_list %}
+    <div>
+      <span class="writer">{{todo.name}}</span>
+      {{todo.todo}}
+      <span><a class="remove" href="{% url 'todo:delete' todo.id %}">&#x00D7</a></span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

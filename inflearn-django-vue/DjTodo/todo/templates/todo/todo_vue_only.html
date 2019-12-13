@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}todo_vue_only.html{% endblock %}
+
+{% block extra-style %}
+<style></style>
+{% endblock %}
+
+{% block content %}
+  <div id="app">
+    <div class="title-group">
+      <h1>My Todo App</h1>
+      서로 할 일이나 의견을 공유해 봅시다.
+    </div>
+
+    <div class="c-input-group">
+      <input class="c-input" v-model="form.writer" />
+      <input class="c-input" v-model="form.message" @keyup.enter="addMessage"/>
+      <button class="c-button" @click="addMessage">send</button>
+    </div>
+    <div class="message-group">
+      <div v-for="(message, messageIndex) in messageList">
+        <span class="writer">{message.writer}</span>
+        {message.writer}
+        <span><a class="remove" @click="removeMessage(messageIndex)">&#x00D7</a></span>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra-script %}
+<script>
+  var app = new Vue({
+    delimiters: ['{', '}'],
+    el: '#app',
+    data: {
+      messageList: [
+        { id: 1, writer: '글쓴이1', message: '내용1' },
+        { id: 2, writer: '글쓴이2', message: '내용2' },
+        { id: 3, writer: '글쓴이3', message: '내용3' },
+      ],
+      form: {
+        writer: '',
+        message: '',
+      },
+    },
+    methods: {
+      addMessage: function () {
+        if (this.form.writer && this.form.message) {
+          this.messageList.push({
+            id: this.messageList.length,
+            writer: this.form.writer,
+            message: this.form.message,
+          });
+          this.form.writer = '';
+          this.form.message = '';
+        }
+      },
+      removeMessage: function (messageIndex) {
+        this.messageList.splice(messageIndex, 1);
+      }
+    }
+  })
+</script>
+{% endblock %}

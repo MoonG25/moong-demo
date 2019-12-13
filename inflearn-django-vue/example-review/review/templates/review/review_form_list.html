@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block title %}review_form_list.html{% endblock %}
+
+{% block extra-style %}
+<style>
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="app" style="overflow-y:auto;">
+  <div class="container">
+
+    <h1>Image Upload</h1>
+
+    <div class="custom-file">
+      <template v-if="!form.image">
+        <input type="file" class="custom-file-input" id="customFile" @change="insertFile">
+        <label class="custom-file-label" for="customFile">Choose file</label>
+      </template>
+      <template v-else>
+        <img :src="form.image" width="200" height="200" />
+        <button @click="removeImage" class="btn">Remove Image</button>
+      </template>
+    </div>
+    <div class="form-row">
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Title" name="title" autocomplete="off" v-model.trim="form.title" />
+      </div>
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Author" name="author" autocomplete="off" v-model.trim="form.author" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="textarea1">Text</label>
+      <textarea class="form-control" id="textarea1" rows="5" name="text" v-model.trim="form.text"></textarea>
+    </div>
+    <button class="btn btn-secondary" type="button" @click="addReview">upload</button>
+
+    <hr/>
+
+    <!--  Image List  -->
+    <div>
+      <template v-if="reviewList.length > 0">
+        <div v-for="(review, reviewIndex) in reviewList">
+          <h1>{review.title}</h1>
+          <span class="writer">{review.author}</span>
+          <span @click="removeReview(reviewIndex, review.id)">&#x00D7</span>
+          <img :src="review.image" :alt="review.image" width="200" height="150" />
+        </div>
+      </template>
+      <template v-else>
+        no data
+      </template>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Are you sure to delete ?</h5>
+          </div>
+          <div class="modal-body">
+            body-text
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-danger btn-sm">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra-script %}
+<script>
+  axios.defaults.xsrfCookieName = 'csrftoken';
+  axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+  let app = new Vue({
+    delimiters: ['{', '}'],
+    el: '#app',
+    data: {
+      reviewList: [],
+      form: {
+        title: '',
+        author: '',
+        image: null,
+        text: '',
+      },
+    },
+    created: function () {
+      console.log('created()...');
+      this.fetch_all_review();
+    },
+    methods: {
+      fetch_all_review: function () {
+        console.log('fetch_all_review()...');
+        let vm = this;
+        axios.get('/api/review/list')
+          .then(function (res) {
+            console.log('GET RES', res);
+            vm.reviewList = res.data.map(d => {
+              d.image = '/media/' + d.image;
+              return d;
+            });
+          })
+          .catch(function (err) {
+            console.log('GET ERR', err);
+          });
+      },
+      addReview: function () {
+        if (this.form.title && this.form.text) {
+          let vm = this;
+          let formData = this.createFormData(this.form);
+          axios.post('/api/review/create/', formData, { headers: { 'Content-Type': 'multipart/form-data' }})
+            .then(function (res) {
+              console.log('GET RES', res);
+              vm.reviewList.push({
+                id: res.data.id,
+                title: res.data.title,
+                author: res.data.author,
+                image: res.data.image,
+                text: res.data.text
+              });
+              vm.form.title = '';
+              vm.form.author = '';
+              vm.form.image = null;
+              vm.form.text = '';
+            })
+            .catch(function (err) {
+              console.log('GET ERR', err);
+            });
+        }
+      },
+      removeReview: function (reviewIndex, reviewId) {
+        if (!confirm('Really delete ?')) return;
+        let vm = this;
+        axios.delete('/api/review/' + reviewId + '/delete/')
+          .then(function (res) {
+            console.log('GET RES', res);
+            vm.reviewList.splice(reviewIndex, 1);
+          })
+          .catch(function (err) {
+            console.log('GET ERR', err);
+          });
+      },
+      insertFile: function (e) {
+        let files = e.target.files || e.dataTransfer.files;
+        if (!files.length) return;
+        this.createImage(files[0]);
+        this.form.image = files[0];
+      },
+      createImage: function (file) {
+        let image = new Image();
+        let reader = new FileReader();
+        let vm = this;
+
+        reader.onload = (e) => {
+          vm.form.image = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      },
+      removeImage: function (e) {
+        this.form.image = null;
+      },
+      createFormData: function (form) {
+        let formData = new FormData();
+        formData.append('title', form.title);
+        formData.append('author', form.author);
+        formData.append('image', form.image);
+        formData.append('text', form.text);
+        return formData;
+      },
+    }
+  })
+</script>
+{% endblock %}
+

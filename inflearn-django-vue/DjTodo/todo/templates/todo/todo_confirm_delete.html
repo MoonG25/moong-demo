@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}todo_confirm_delete.html{% endblock %}
+
+{% block extra-style %}
+<style></style>
+{% endblock %}
+
+{% block content %}
+<div id="app">
+  <div class="title-group">
+    <h1>Todo Delete</h1>
+    <p>Are you sure to delete {{ object }} ?</p>
+    <br>
+
+    <form action="." method="post"> {% csrf_token %}
+      <button class="c-button" type="submit">Confirm</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>{% block title %}TITLE{% endblock %}</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Chilanka|Gothic+A1&display=swap" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://kit.fontawesome.com/c6cfc67395.js"></script>
+  <link rel="icon" href="{% static 'img/favicon.ico' %}">
+
+  {% block extra-style %}{% endblock %}
+</head>
+<body style="padding-top: 56px;">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand mx-3 mb-0 font-weight-bold" href="/">Reviews</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'review:home' %}">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'review:index' %}">INDEX</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'review:home' %}">HOME</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Util</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a>
+            <div class="dropdown-divider"></div>
+          </div>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control form-control-sm mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <div class="dropdown mx-3">
+          <a class="dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown">
+            <i class="fas fa-user"></i> Anonymous
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <div class="dropdown-divider"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  {% block extra-script %}{% endblock %}
+</body>
+</html>

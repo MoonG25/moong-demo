@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <div class="input-group">
+      <input v-model="form.writer" />
+      <input v-model="form.message" />
+      <button @click="addMessage">send</button>
+    </div>
+    <div class="message-group">
+      <div v-for="(message, messageIndex) in messageList">
+        <span class="writer">{{message.writer}}</span>
+        {{message.writer}}
+        <button @click="removeMessage(messageIndex)">remove</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        messageList: [
+          { id: 1, writer: '글쓴이1', message: '내용1' },
+          { id: 2, writer: '글쓴이2', message: '내용2' },
+          { id: 3, writer: '글쓴이3', message: '내용3' },
+        ],
+        form: {
+          writer: '',
+          message: '',
+        },
+      },
+      methods: {
+        addMessage: function () {
+          if (this.form.writer && this.form.message) {
+            this.messageList.push({
+              id: this.messageList.length,
+              writer: this.form.writer,
+              message: this.form.message,
+            });
+            this.form.writer = '';
+            this.form.message = '';
+          }
+        },
+        removeMessage: function (messageIndex) {
+          this.messageList.splice(messageIndex, 1);
+        }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Vue.js - Django todo app{% endblock %}
+
+{% block extra-style %}
+<style></style>
+{% endblock %}
+
+{% block content %}
+<div id="app">
+  <div class="title-group">
+    <h1>My Todo App</h1>
+    서로 할 일이나 의견을 공유해 봅시다.
+  </div>
+
+  <div class="c-input-group">
+    <input class="c-input" type="text" autocomplete="off" v-model.trim="form.name" maxlength="10" />
+    <input class="c-input" type="text" autocomplete="off" v-model.trim="form.todo" maxlength="50" @keyup.enter="addTodo" />
+    <button class="c-button" @click="addTodo">add</button>
+  </div>
+
+  <div class="message-group">
+    <div v-for="(todo, todoIndex) in todoList">
+      <span class="writer">{todo.name}</span>
+      {todo.todo}
+      <span @click="removeTodo(todoIndex, todo.id)">&#x00D7</span>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Are you sure to delete ?</h5>
+        </div>
+        <div class="modal-body">
+          body-text
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger btn-sm">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra-script %}
+<script>
+  axios.defaults.xsrfCookieName = 'csrftoken';
+  axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+  var app = new Vue({
+    delimiters: ['{', '}'],
+    el: '#app',
+    data: {
+      todoList: [],
+      form: {
+        name: '',
+        todo: '',
+      },
+    },
+    created: function () {
+      console.log('created()...');
+      this.fetch_all_todo();
+    },
+    methods: {
+      fetch_all_todo: function () {
+        console.log('fetch_all_todo()...');
+        var vm = this;
+        axios.get('/api/todo/list/')
+            .then(function (res) {
+              console.log('GET RES', res);
+              vm.todoList = res.data;
+            })
+            .catch(function (err) {
+              console.log('GET ERR', err);
+            });
+      },
+      addTodo: function () {
+        if (this.form.todo) {
+          var vm = this;
+          var postData = { name: this.form.name, todo: this.form.todo };
+          axios.post('/api/todo/create/', postData)
+              .then(function (res) {
+                console.log('GET RES', res);
+                vm.todoList.push({
+                  id: res.data.id,
+                  name: res.data.name,
+                  todo: res.data.todo
+                });
+                vm.form.name = '';
+                vm.form.todo = '';
+              })
+              .catch(function (err) {
+                console.log('GET ERR', err);
+              });
+        }
+      },
+      removeTodo: function (todoIndex, todoId) {
+      if (!confirm('Really delete ?')) return;
+        var vm = this;
+        axios.delete('/api/todo/' + todoId + '/delete/')
+            .then(function (res) {
+              console.log('GET RES', res);
+              vm.todoList.splice(todoIndex, 1);
+            })
+            .catch(function (err) {
+              console.log('GET ERR', err);
+            });
+      }
+    }
+  })
+</script>
+{% endblock %}
