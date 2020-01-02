@@ -38,3 +38,4 @@ build/
 
 # next.js build output
 .next
+target/
